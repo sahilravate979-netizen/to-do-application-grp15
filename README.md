@@ -1,6 +1,6 @@
 # TaskFlow – UI Design
 
-Mobile-first UI design for **TaskFlow**, a smart to-do and productivity app (Angular + Fastify + PostgreSQL).
+Mobile-first UI design for **TaskFlow**, a smart to-do and productivity app (Angular + Fastify + MySql).
 
 | Login | Dashboard | Task List | Add Task |
 |:--:|:--:|:--:|:--:|
@@ -25,7 +25,6 @@ Mobile-first UI design for **TaskFlow**, a smart to-do and productivity app (Ang
 ## Links
 - **Clickable prototype:** [Prototype/index.html](Prototype/index.html)
 - **PDF:** [TaskFlow-UI-Design.pdf](TaskFlow-UI-Design.pdf)
-- **Figma:** add link here
 
 ## User flow
 Login → Dashboard → Task List → Add Task → Task List
