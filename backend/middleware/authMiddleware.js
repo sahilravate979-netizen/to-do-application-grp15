@@ -16,9 +16,14 @@ const authMiddleware = (req, res, next) => {
 
     try {
 
+        // Verify JWT token
         const decoded = verifyToken(token);
 
-        req.user = decoded;
+        // Store user ID and role
+        req.user = {
+            id: decoded.id,
+            role: decoded.role
+        };
 
         next();
 
