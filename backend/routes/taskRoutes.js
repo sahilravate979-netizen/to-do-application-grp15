@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
+const authMiddleware = require('../middleware/authMiddleware');
+
 const {
   createTask,
   getTasks,
@@ -9,6 +11,9 @@ const {
   updateTask,
   deleteTask
 } = require('../controllers/taskController');
+
+// All task routes require login
+router.use(authMiddleware);
 
 router.post('/', createTask);
 router.get('/', getTasks);

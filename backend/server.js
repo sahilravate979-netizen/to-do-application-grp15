@@ -2,17 +2,24 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Import Routes
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+
+// Authentication Routes
 app.use('/api/auth', authRoutes);
+
+// Admin Routes
+app.use('/api/admin', adminRoutes);
+
+// Task CRUD Routes
 app.use('/api/tasks', taskRoutes);
 
 // Base Route
