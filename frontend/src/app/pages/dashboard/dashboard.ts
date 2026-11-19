@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Task as TaskService, TaskItem } from '../../services/task';
@@ -25,7 +25,10 @@ export class Dashboard implements OnInit {
   date = 'Wednesday, 18 November';
   tasks: Task[] = [];
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -44,10 +47,12 @@ export class Dashboard implements OnInit {
           status: t.status || 'Pending',
           dueGroup: this.getDueGroup(t.dueDate || t.deadline)
         }));
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to fetch tasks from API, falling back to localStorage:', err);
         this.loadLocalFallback();
+        this.cdr.detectChanges();
       }
     });
   }
@@ -77,11 +82,15 @@ export class Dashboard implements OnInit {
       },
       {
         title: 'In progress',
-        count: this.tasks.filter((task) => task.status === 'In progress').length
+        count: this.tasks.filter(
+          (task) => task.status === 'In progress' || task.status === 'In Progress'
+        ).length
       },
       {
         title: 'Completed',
-        count: this.tasks.filter((task) => task.status === 'Done').length
+        count: this.tasks.filter(
+          (task) => task.status === 'Done' || task.status === 'Completed'
+        ).length
       }
     ];
   }
@@ -92,13 +101,13 @@ export class Dashboard implements OnInit {
     }
 
     const completed = this.tasks.filter(
-      (task) => task.status === 'Done'
+      (task) => task.status === 'Done' || task.status === 'Completed'
     ).length;
 
     return Math.round((completed / this.tasks.length) * 100);
   }
 
-  get duetasks() {
+  get dueTasks() {
     return this.tasks
       .filter((task) => task.dueGroup === 'Today')
       .map((task) => ({

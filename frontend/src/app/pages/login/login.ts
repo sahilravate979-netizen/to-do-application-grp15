@@ -48,6 +48,26 @@ export class Login {
 
   createAccount(event: Event) {
     event.preventDefault();
-    this.errorMessage = 'Account registration will be available soon.';
+    this.errorMessage = '';
+
+    if (!this.email.trim() || !this.password.trim()) {
+      this.errorMessage = 'Enter your email and password above, then click Create account.';
+      return;
+    }
+
+    const derivedName = this.email.split('@')[0].replace(/[^a-zA-Z]/g, '') || 'User';
+
+    this.authService.register({
+      name: derivedName,
+      email: this.email.trim(),
+      password: this.password
+    }).subscribe({
+      next: () => {
+        this.login();
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Registration failed.';
+      }
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -40,8 +40,9 @@ export class Tasks implements OnInit {
 
   constructor(
     private router: Router,
-    private taskService: TaskService
-  ) {}
+    private taskService: TaskService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.loadTasks();
@@ -86,12 +87,13 @@ export class Tasks implements OnInit {
       }
     }
   }
-
   get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
       const matchesFilter =
         this.selectedFilter === 'All' ||
-        task.status === this.selectedFilter;
+        (this.selectedFilter === 'Done'
+          ? (task.status === 'Done' || task.status === 'Completed')
+          : task.status === this.selectedFilter);
 
       const matchesSearch =
         task.title.toLowerCase().includes(
@@ -119,17 +121,19 @@ export class Tasks implements OnInit {
   }
 
   toggleTask(task: Task) {
-    const nextStatus = task.status === 'Done' ? 'Pending' : 'Done';
+    const previousStatus = task.status;
+    const isDone = task.status === 'Done' || task.status === 'Completed';
+    const nextStatus = isDone ? 'Pending' : 'Completed';
+
+    task.status = nextStatus;
+
     this.taskService.updateTask(task.id, { status: nextStatus }).subscribe({
-      next: () => {
-        task.status = nextStatus;
-      },
       error: (err) => {
+        task.status = previousStatus;
         console.error('Failed to update task status:', err);
       }
     });
   }
-
   openAddForm() {
     this.router.navigate(['/new-task']);
   }
@@ -149,7 +153,7 @@ export class Tasks implements OnInit {
       priority: this.newTask.priority,
       dueDate: this.newTask.dueDate,
       status: 'Pending',
-      ...( { category: this.newTask.category } as any )
+      ...({ category: this.newTask.category } as any)
     }).subscribe({
       next: (res) => {
         if (res?.data) {
@@ -173,11 +177,14 @@ export class Tasks implements OnInit {
   }
 
   deleteTask(id: number | string) {
+    const previousTasks = [...this.tasks];
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+    this.cdr.detectChanges();
+
     this.taskService.deleteTask(id).subscribe({
-      next: () => {
-        this.tasks = this.tasks.filter((task) => task.id !== id);
-      },
       error: (err) => {
+        this.tasks = previousTasks;
+        this.cdr.detectChanges();
         console.error('Failed to delete task:', err);
       }
     });

@@ -15,17 +15,12 @@
   <!-- Search -->
   <div class="search-box">
     <span>⌕</span>
-    <input
-      type="text"
-      placeholder="Search tasks..."
-      [(ngModel)]="searchText">
+    <input type="text" placeholder="Search tasks..." [(ngModel)]="searchText">
   </div>
 
   <!-- Filters -->
   <div class="filter-tabs">
-    <button
-      *ngFor="let filter of ['All', 'Pending', 'In progress', 'Done']"
-      [class.active]="selectedFilter === filter"
+    <button *ngFor="let filter of ['All', 'Pending', 'In progress', 'Done']" [class.active]="selectedFilter === filter"
       (click)="selectFilter(filter)">
       {{ filter }}
     </button>
@@ -37,17 +32,15 @@
 
     <div class="task-card" *ngFor="let task of todayTasks">
 
-      <button
-        class="check-button"
-        [class.checked]="task.status === 'Done'"
+      <button class="check-button" [class.checked]="task.status === 'Done' || task.status === 'Completed'"
         (click)="toggleTask(task)">
-        {{ task.status === 'Done' ? '✓' : '' }}
+        {{ (task.status === 'Done' || task.status === 'Completed') ? '✓' : '' }}
       </button>
 
       <div class="task-info">
-        <h3 [class.completed]="task.status === 'Done'">
-          {{ task.title }}
-        </h3>
+        <h3 [class.completed]="task.status === 'Done' || task.status === 'Completed'"></h3>
+        {{ task.title }}
+
         <p>{{ task.time }}</p>
       </div>
 
@@ -55,9 +48,7 @@
         {{ task.priority }}
       </span>
 
-      <button class="delete-button" (click)="deleteTask(task.id)">
-        ×
-      </button>
+      <button class="delete-button" (click)="deleteTask(task.id)">×</button>
 
     </div>
 
@@ -72,15 +63,13 @@
 
     <div class="task-card" *ngFor="let task of upcomingTasks">
 
-      <button
-        class="check-button"
-        [class.checked]="task.status === 'Done'"
+      <button class="check-button" [class.checked]="task.status === 'Done' || task.status === 'Completed'"
         (click)="toggleTask(task)">
-        {{ task.status === 'Done' ? '✓' : '' }}
+        {{ (task.status === 'Done' || task.status === 'Completed') ? '✓' : '' }}
       </button>
 
       <div class="task-info">
-        <h3 [class.completed]="task.status === 'Done'">
+        <h3 [class.completed]="task.status === 'Done' || task.status === 'Completed'">
           {{ task.title }}
         </h3>
         <p>{{ task.time }}</p>
@@ -91,7 +80,7 @@
       </span>
 
       <button class="delete-button" (click)="deleteTask(task.id)">
-        ×
+        x
       </button>
 
     </div>
@@ -113,44 +102,26 @@
       <form (ngSubmit)="addTask()">
 
         <label for="title">Title</label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          [(ngModel)]="newTask.title"
-          placeholder="Enter task title"
-          required>
+        <input id="title" name="title" type="text" [(ngModel)]="newTask.title" placeholder="Enter task title" required>
 
         <label for="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          [(ngModel)]="newTask.description"
+        <textarea id="description" name="description" [(ngModel)]="newTask.description"
           placeholder="Add task description">
         </textarea>
 
         <label>Priority</label>
         <div class="choice-buttons">
-          <button type="button"
-            *ngFor="let p of ['Low', 'Medium', 'High']"
-            [class.selected]="newTask.priority === p"
+          <button type="button" *ngFor="let p of ['Low', 'Medium', 'High']" [class.selected]="newTask.priority === p"
             (click)="newTask.priority = p">
             {{ p }}
           </button>
         </div>
 
         <label for="dueDate">Due date</label>
-        <input
-          id="dueDate"
-          name="dueDate"
-          type="date"
-          [(ngModel)]="newTask.dueDate">
+        <input id="dueDate" name="dueDate" type="date" [(ngModel)]="newTask.dueDate">
 
         <label for="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          [(ngModel)]="newTask.category">
+        <select id="category" name="category" [(ngModel)]="newTask.category">
           <option value="Work">Work</option>
           <option value="Personal">Personal</option>
           <option value="Study">Study</option>
