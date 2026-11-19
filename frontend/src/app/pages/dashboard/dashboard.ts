@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Task as TaskService, TaskItem } from '../../services/task';
 
 interface Task {
-  id: number;
+  id: number | string;
   title: string;
   priority: string;
   time: string;
@@ -19,67 +20,52 @@ interface Task {
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
-
+export class Dashboard implements OnInit {
   greeting = 'Good morning';
   date = 'Wednesday, 18 November';
-
   tasks: Task[] = [];
 
-  constructor() {
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit(): void {
     this.loadTasks();
   }
 
   loadTasks() {
-    const storedTasks = localStorage.getItem('taskflow_tasks');
-
-    const defaultTasks: Task[] = [
-      {
-        id: 1,
-        title: 'Send project update',
-        priority: 'High',
-        time: '5:00 PM',
-        category: 'Work',
-        status: 'Pending',
-        dueGroup: 'Today'
+    this.taskService.getTasks().subscribe({
+      next: (res) => {
+        const apiTasks: TaskItem[] = res?.data || [];
+        this.tasks = apiTasks.map((t) => ({
+          id: t.id || t.task_id || 0,
+          title: t.title,
+          priority: t.priority || 'Medium',
+          time: t.dueDate || t.deadline || 'No due date',
+          category: (t as any).category || 'Personal',
+          status: t.status || 'Pending',
+          dueGroup: this.getDueGroup(t.dueDate || t.deadline)
+        }));
       },
-      {
-        id: 2,
-        title: 'Write API documentation',
-        priority: 'Medium',
-        time: '6:30 PM',
-        category: 'Work',
-        status: 'In progress',
-        dueGroup: 'Today'
-      },
-      {
-        id: 3,
-        title: 'Plan weekly groceries',
-        priority: 'Low',
-        time: 'Fri, 20 Nov',
-        category: 'Personal',
-        status: 'Pending',
-        dueGroup: 'Upcoming'
-      },
-      {
-        id: 4,
-        title: 'Book dentist',
-        priority: 'Low',
-        time: 'Completed',
-        category: 'Personal',
-        status: 'Done',
-        dueGroup: 'Upcoming'
+      error: (err) => {
+        console.error('Failed to fetch tasks from API, falling back to localStorage:', err);
+        this.loadLocalFallback();
       }
-    ];
+    });
+  }
 
+  private getDueGroup(dueDate?: string): string {
+    if (!dueDate) return 'Today';
+    const today = new Date().toISOString().split('T')[0];
+    return dueDate.startsWith(today) ? 'Today' : 'Upcoming';
+  }
+
+  private loadLocalFallback() {
+    const storedTasks = localStorage.getItem('taskflow_tasks');
     if (storedTasks) {
       try {
         this.tasks = JSON.parse(storedTasks);
       } catch {
-        this.tasks = defaultTasks;
+        this.tasks = [];
       }
-    } else {
-      this.tasks = defaultTasks;
     }
   }
 
@@ -87,15 +73,15 @@ export class Dashboard {
     return [
       {
         title: 'Pending',
-        count: this.tasks.filter(task => task.status === 'Pending').length
+        count: this.tasks.filter((task) => task.status === 'Pending').length
       },
       {
         title: 'In progress',
-        count: this.tasks.filter(task => task.status === 'In progress').length
+        count: this.tasks.filter((task) => task.status === 'In progress').length
       },
       {
         title: 'Completed',
-        count: this.tasks.filter(task => task.status === 'Done').length
+        count: this.tasks.filter((task) => task.status === 'Done').length
       }
     ];
   }
@@ -106,16 +92,16 @@ export class Dashboard {
     }
 
     const completed = this.tasks.filter(
-      task => task.status === 'Done'
+      (task) => task.status === 'Done'
     ).length;
 
     return Math.round((completed / this.tasks.length) * 100);
   }
 
-  get dueTasks() {
+  get duetasks() {
     return this.tasks
-      .filter(task => task.dueGroup === 'Today')
-      .map(task => ({
+      .filter((task) => task.dueGroup === 'Today')
+      .map((task) => ({
         title: task.title,
         priority: task.priority,
         time: task.time

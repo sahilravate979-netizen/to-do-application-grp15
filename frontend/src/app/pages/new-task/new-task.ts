@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Task as TaskService } from '../../services/task';
 
 @Component({
   selector: 'app-new-task',
@@ -11,7 +12,6 @@ import { Router } from '@angular/router';
   styleUrl: './new-task.css'
 })
 export class NewTask {
-
   task = {
     title: '',
     description: '',
@@ -20,7 +20,10 @@ export class NewTask {
     category: 'Work'
   };
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private taskService: TaskService
+  ) {}
 
   saveTask() {
     if (!this.task.title.trim()) {
@@ -28,23 +31,23 @@ export class NewTask {
       return;
     }
 
-    const savedTasks = JSON.parse(
-      localStorage.getItem('taskflow_tasks') || '[]'
-    );
-
-    savedTasks.push({
-      ...this.task,
-      id: Date.now(),
-      status: 'Pending'
+    this.taskService.createTask({
+      title: this.task.title.trim(),
+      description: this.task.description,
+      priority: this.task.priority,
+      dueDate: this.task.dueDate,
+      status: 'Pending',
+      ...( { category: this.task.category } as any )
+    }).subscribe({
+      next: () => {
+        alert('Task saved successfully!');
+        this.router.navigate(['/tasks']);
+      },
+      error: (err) => {
+        console.error('Failed to save task via API:', err);
+        alert('Could not save task to server. Please check backend connection.');
+      }
     });
-
-    localStorage.setItem(
-      'taskflow_tasks',
-      JSON.stringify(savedTasks)
-    );
-
-    alert('Task saved successfully!');
-    this.router.navigate(['/tasks']);
   }
 
   cancel() {
