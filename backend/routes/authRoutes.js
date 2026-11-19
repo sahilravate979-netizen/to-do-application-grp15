@@ -65,6 +65,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await hashPassword(password);
 
         // Insert user into database
+        // Database automatically assigns the User role
         const [result] = await db.execute(
             'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)',
             [cleanName, cleanEmail, hashedPassword]
@@ -75,7 +76,8 @@ router.post('/register', async (req, res) => {
             user: {
                 id: result.insertId,
                 name: cleanName,
-                email: cleanEmail
+                email: cleanEmail,
+                role: 'User'
             }
         });
 
@@ -97,7 +99,7 @@ router.post('/register', async (req, res) => {
 });
 
 
-// USER LOGIN API
+// USER AND ADMIN LOGIN API
 router.post('/login', async (req, res) => {
 
     const { email, password } = req.body;
@@ -124,9 +126,9 @@ router.post('/login', async (req, res) => {
 
         const cleanEmail = email.trim().toLowerCase();
 
-        // Find user in database
+        // Find user or admin in database
         const [users] = await db.execute(
-            'SELECT user_id, name, email, password_hash FROM users WHERE email = ?',
+            'SELECT user_id, name, email, password_hash, role FROM users WHERE email = ?',
             [cleanEmail]
         );
 
@@ -150,8 +152,8 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // Generate JWT token
-        const token = generateToken(user.user_id);
+        // Generate JWT token with user ID and role
+        const token = generateToken(user.user_id, user.role);
 
         return res.status(200).json({
             message: 'Login successful',
@@ -159,7 +161,8 @@ router.post('/login', async (req, res) => {
             user: {
                 id: user.user_id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                role: user.role
             }
         });
 
@@ -193,7 +196,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
 
         // Fetch authenticated user's details from database
         const [users] = await db.execute(
-            'SELECT user_id, name, email, created_at FROM users WHERE user_id = ?',
+            'SELECT user_id, name, email, created_at, role FROM users WHERE user_id = ?',
             [req.user.id]
         );
 
