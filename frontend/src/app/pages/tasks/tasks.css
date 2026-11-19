@@ -1,0 +1,370 @@
+* {
+  box-sizing: border-box;
+}
+
+.tasks-page {
+  min-height: 100vh;
+  background: #F3F7FD;
+  padding: 25px 7% 100px;
+  font-family: 'Inter', sans-serif;
+  color: #0B2A5B;
+}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.brand-logo {
+  width: 155px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.add-button {
+  background: #1E6FE8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.page-heading {
+  margin-bottom: 25px;
+}
+
+.page-heading h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  margin: 0 0 10px;
+}
+
+.page-heading p {
+  color: #5B6B85;
+  font-size: 14px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #DCE4F0;
+  border-radius: 9px;
+  padding: 0 15px;
+  height: 48px;
+  margin-bottom: 22px;
+}
+
+.search-box span {
+  font-size: 24px;
+  color: #5B6B85;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: #0B2A5B;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filter-tabs button {
+  padding: 10px 20px;
+  border: 1px solid #DCE4F0;
+  background: white;
+  color: #5B6B85;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filter-tabs button.active {
+  background: #1E6FE8;
+  color: white;
+  border-color: #1E6FE8;
+}
+
+.task-group {
+  margin-bottom: 32px;
+}
+
+.task-group h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  margin-bottom: 17px;
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: white;
+  border: 1px solid #E5ECF5;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+
+.check-button {
+  width: 21px;
+  height: 21px;
+  min-width: 21px;
+  border: 2px solid #B8C6D9;
+  border-radius: 50%;
+  background: white;
+  color: white;
+  cursor: pointer;
+}
+
+.check-button.checked {
+  background: #1E6FE8;
+  border-color: #1E6FE8;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-info h3 {
+  font-size: 14px;
+  margin: 0 0 7px;
+  font-weight: 600;
+}
+
+.task-info h3.completed {
+  text-decoration: line-through;
+  color: #9AA8BC;
+}
+
+.task-info p {
+  font-size: 12px;
+  color: #5B6B85;
+  margin: 0;
+}
+
+.priority {
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.priority.high {
+  color: #D94848;
+  background: #FFF0F0;
+}
+
+.priority.medium {
+  color: #B7791F;
+  background: #FFF7E6;
+}
+
+.priority.low {
+  color: #25845A;
+  background: #EAF8F0;
+}
+
+.delete-button {
+  border: none;
+  background: transparent;
+  color: #9AA8BC;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.empty-message {
+  color: #5B6B85;
+  font-size: 13px;
+  padding: 15px 0;
+}
+
+/* Add Task Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 42, 91, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.add-task-modal {
+  background: white;
+  width: 100%;
+  max-width: 470px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 15px;
+  box-shadow: 0 10px 35px rgba(11, 42, 91, 0.15);
+}
+
+.modal-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-heading h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 21px;
+  margin: 0;
+}
+
+.modal-heading button {
+  border: none;
+  background: transparent;
+  font-size: 25px;
+  color: #5B6B85;
+  cursor: pointer;
+}
+
+.add-task-modal form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 18px 0 9px;
+}
+
+.add-task-modal input,
+.add-task-modal textarea,
+.add-task-modal select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #DCE4F0;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  outline: none;
+  color: #0B2A5B;
+}
+
+.add-task-modal textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.add-task-modal input:focus,
+.add-task-modal textarea:focus,
+.add-task-modal select:focus {
+  border-color: #1E6FE8;
+}
+
+.choice-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.choice-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #DCE4F0;
+  background: white;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #5B6B85;
+}
+
+.choice-buttons button.selected {
+  background: #EAF2FF;
+  color: #1E6FE8;
+  border-color: #1E6FE8;
+}
+
+.save-button {
+  width: 100%;
+  margin-top: 25px;
+  height: 47px;
+  background: #1E6FE8;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-button:hover,
+.add-button:hover {
+  background: #0B2A5B;
+}
+
+/* Bottom Navigation */
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-top: 1px solid #E5ECF5;
+  display: flex;
+  justify-content: space-around;
+  padding: 13px 10px;
+  z-index: 10;
+}
+
+.bottom-navigation a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: #5B6B85;
+  font-size: 12px;
+}
+
+.bottom-navigation a span {
+  font-size: 21px;
+}
+
+.bottom-navigation a.active {
+  color: #1E6FE8;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .tasks-page {
+    padding: 20px 16px 90px;
+  }
+
+  .tasks-header {
+    margin-bottom: 30px;
+  }
+
+  .task-card {
+    gap: 10px;
+    padding: 14px 10px;
+  }
+
+  .filter-tabs {
+    gap: 7px;
+  }
+
+  .filter-tabs button {
+    padding: 9px 12px;
+  }
+
+  .add-task-modal {
+    padding: 22px;
+  }
+}
