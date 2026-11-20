@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -16,7 +16,11 @@ export class AdminReports implements OnInit {
   users: any[] = [];
   private adminUrl = 'http://localhost:3000/api/admin';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadReportsData();
@@ -32,10 +36,13 @@ export class AdminReports implements OnInit {
 
     this.http.get<any>(`${this.adminUrl}/users`, { headers }).pipe(
       switchMap((res) => {
-        const regularUsers = (res.users || []).filter((u: any) => u.role === 'User');
+        const regularUsers = (res.users || []).filter(
+          (u: any) => (u.role || '').toLowerCase() === 'user'
+        );
         if (regularUsers.length === 0) {
           return of([]);
         }
+
         const taskRequests = regularUsers.map((u: any) =>
           this.http.get<any>(`${this.adminUrl}/users/${u.user_id}/tasks`, { headers }).pipe(
             map((taskRes) => ({
@@ -47,11 +54,13 @@ export class AdminReports implements OnInit {
             catchError(() => of({ user_id: u.user_id, name: u.name, email: u.email, tasks: [] }))
           )
         );
+
         return forkJoin(taskRequests);
       })
     ).subscribe({
       next: (usersWithTasks: any) => {
         this.users = usersWithTasks;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load admin reports:', err);
@@ -63,19 +72,19 @@ export class AdminReports implements OnInit {
   }
 
   get allTasks() {
-    return this.users.flatMap(user => user.tasks);
+    return this.users.flatMap((user) => user.tasks);
   }
 
   get completedTasks() {
-    return this.allTasks.filter(task => task.status === 'Completed').length;
+    return this.allTasks.filter((task) => (task.status || '').toLowerCase() === 'completed').length;
   }
 
   get pendingTasks() {
-    return this.allTasks.filter(task => task.status === 'Pending').length;
+    return this.allTasks.filter((task) => (task.status || '').toLowerCase() === 'pending').length;
   }
 
   get inProgressTasks() {
-    return this.allTasks.filter(task => task.status === 'In Progress').length;
+    return this.allTasks.filter((task) => (task.status || '').toLowerCase() === 'in progress').length;
   }
 
   get overallProgress() {
@@ -89,7 +98,7 @@ export class AdminReports implements OnInit {
       return 0;
     }
     const completed = user.tasks.filter(
-      (task: any) => task.status === 'Completed'
+      (task: any) => (task.status || '').toLowerCase() === 'completed'
     ).length;
 
     return Math.round((completed / user.tasks.length) * 100);

@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const db = require('./config/db');
 require('dotenv').config();
 
 const app = express();
@@ -27,9 +29,25 @@ app.get('/', (req, res) => {
   res.send('To-Do Application Backend is running!');
 });
 
+async function ensureDefaultAdmin() {
+  try {
+    const hash = await bcrypt.hash('Admin@12345', 10);
+    await db.query(
+      `INSERT INTO users (name, email, password_hash, role)
+       VALUES (?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE role = 'Admin'`,
+      ['Admin', 'admin@example.com', hash, 'Admin']
+    );
+    console.log('Default admin verified (admin@example.com)');
+  } catch (err) {
+    console.error('Admin seed skipped:', err.message);
+  }
+}
+
 // Server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
+  await ensureDefaultAdmin();
 });

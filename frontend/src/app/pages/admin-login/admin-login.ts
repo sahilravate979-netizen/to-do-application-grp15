@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -18,7 +18,11 @@ export class AdminLogin {
 
   private apiUrl = 'http://localhost:3000/api/auth/login';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   login() {
     this.errorMessage = '';
@@ -33,17 +37,24 @@ export class AdminLogin {
       password: this.password
     }).subscribe({
       next: (res) => {
-        if (res.user?.role !== 'Admin') {
+        const user = res?.user || res?.data?.user;
+        const token = res?.token || res?.data?.token;
+        const role = (user?.role || '').toLowerCase();
+
+        if (role !== 'admin') {
           this.errorMessage = 'Access denied. Admin privileges required.';
+          this.cdr.detectChanges();
           return;
         }
-        localStorage.setItem('token', res.token);
+
+        localStorage.setItem('token', token);
         localStorage.setItem('taskflow_role', 'admin');
-        localStorage.setItem('user', JSON.stringify(res.user));
+        localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/admin-dashboard']);
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Invalid admin email or password.';
+        this.cdr.detectChanges();
       }
     });
   }
