@@ -1,0 +1,323 @@
+* {
+  box-sizing: border-box;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #F3F7FD;
+  padding: 25px 7%;
+  padding-bottom: 50px;
+  font-family: 'Inter', sans-serif;
+  color: #0B2A5B;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 45px;
+}
+
+.brand-logo {
+  width: 155px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #5B6B85;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1E6FE8;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.logout-button {
+  background: #ffffff;
+  border: 1px solid #DCE4F0;
+  color: #1E6FE8;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: #1E6FE8;
+  color: #ffffff;
+}
+
+.welcome-section {
+  margin-bottom: 28px;
+}
+
+.date {
+  color: #5B6B85;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.welcome-section h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.welcome-description {
+  color: #5B6B85;
+  font-size: 14px;
+}
+
+/* Progress & Reports Button */
+.reports-button {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 11px 18px;
+  background: #1E6FE8;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.reports-button:hover {
+  background: #0B2A5B;
+}
+
+.progress-card {
+  background: #0B2A5B;
+  color: white;
+  padding: 27px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-info h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.progress-info p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #DCE8FA;
+}
+
+.progress-percentage {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.progress-track {
+  height: 8px;
+  background: #526B91;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2B8CFF;
+  border-radius: 20px;
+}
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 22px 16px;
+  border-radius: 13px;
+  border: 1px solid #E5ECF5;
+}
+
+.stat-card h2 {
+  font-size: 26px;
+  margin: 0 0 8px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.stat-card p {
+  color: #5B6B85;
+  font-size: 12px;
+  margin: 0;
+}
+
+.users-section {
+  margin-bottom: 30px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 19px;
+}
+
+.section-heading span {
+  color: #1E6FE8;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.user-card {
+  background: #ffffff;
+  border: 1px solid #E5ECF5;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #E8F1FF;
+  color: #1E6FE8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+.user-info h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.user-info p {
+  font-size: 12px;
+  color: #5B6B85;
+  margin: 0;
+}
+
+.user-tasks h4 {
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 0;
+  border-top: 1px solid #E5ECF5;
+  font-size: 13px;
+}
+
+.status {
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status.completed {
+  color: #16834A;
+  background: #E8F8EF;
+}
+
+.status.pending {
+  color: #B7791F;
+  background: #FFF7E6;
+}
+
+.status.in-progress {
+  color: #1E6FE8;
+  background: #EAF2FF;
+}
+
+@media (max-width: 900px) {
+  .stats-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .dashboard-page {
+    padding: 20px 18px 40px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 32px;
+  }
+
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px 10px;
+  }
+
+  .stat-card h2 {
+    font-size: 22px;
+  }
+
+  .progress-card {
+    padding: 20px;
+  }
+
+  .progress-info h2 {
+    font-size: 17px;
+  }
+
+  .progress-info p {
+    font-size: 12px;
+  }
+
+  .section-heading h2 {
+    font-size: 16px;
+  }
+
+  .task-row {
+    align-items: flex-start;
+    font-size: 12px;
+  }
+}
