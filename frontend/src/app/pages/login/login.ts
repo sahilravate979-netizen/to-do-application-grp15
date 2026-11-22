@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +12,11 @@ import { Router } from '@angular/router';
   styleUrl: './login.css'
 })
 export class Login {
-
   email = '';
   password = '';
   errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   login() {
     this.errorMessage = '';
@@ -26,10 +26,15 @@ export class Login {
       return;
     }
 
-    // Demo login until backend authentication is connected
-    localStorage.setItem('taskflow_user', this.email);
-
-    this.router.navigate(['/dashboard']);
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (res) => {
+        localStorage.setItem('taskflow_user', this.email);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Invalid email or password.';
+      }
+    });
   }
 
   forgotPassword(event: Event) {
@@ -43,6 +48,26 @@ export class Login {
 
   createAccount(event: Event) {
     event.preventDefault();
-    this.errorMessage = 'Account registration will be available soon.';
+    this.errorMessage = '';
+
+    if (!this.email.trim() || !this.password.trim()) {
+      this.errorMessage = 'Enter your email and password above, then click Create account.';
+      return;
+    }
+
+    const derivedName = this.email.split('@')[0].replace(/[^a-zA-Z]/g, '') || 'User';
+
+    this.authService.register({
+      name: derivedName,
+      email: this.email.trim(),
+      password: this.password
+    }).subscribe({
+      next: () => {
+        this.login();
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Registration failed.';
+      }
+    });
   }
 }
