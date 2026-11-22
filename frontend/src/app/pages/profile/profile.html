@@ -1,0 +1,45 @@
+
+<div class="profile-page">
+
+  <header class="page-header">
+    <a routerLink="/dashboard" class="back-button">←</a>
+    <h1>My Profile</h1>
+  </header>
+
+  <section class="profile-card">
+
+    <div class="profile-avatar">
+      {{ name.charAt(0).toUpperCase() }}
+    </div>
+
+    <h2>{{ name }}</h2>
+    <p>{{ email }}</p>
+
+    <div class="profile-divider"></div>
+
+    <div class="profile-details">
+
+      <div>
+        <span>Full Name</span>
+        <strong>{{ name }}</strong>
+      </div>
+
+      <div>
+        <span>Email Address</span>
+        <strong>{{ email }}</strong>
+      </div>
+
+      <div>
+        <span>Account Type</span>
+        <strong>{{ accountType }}</strong>
+      </div>
+
+    </div>
+
+    <button class="logout-button" (click)="logout()">
+      Logout
+    </button>
+
+  </section>
+
+</div>

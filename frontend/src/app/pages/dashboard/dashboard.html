@@ -70,26 +70,39 @@
   </section>
 
   <!-- Bottom Navigation -->
-  <nav class="bottom-navigation">
-    <a routerLink="/dashboard" class="active">
-      <span>⌂</span>
-      Home
-    </a>
+  
 
-    <a routerLink="/tasks">
-      <span>☷</span>
-      Tasks
-    </a>
+<nav class="bottom-navigation">
 
-    <a href="#">
-      <span>▥</span>
-      Insights
-    </a>
+  <a
+    routerLink="/dashboard"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    <span>⌂</span>
+    Home
+  </a>
 
-    <a href="#">
-      <span>♙</span>
-      Profile
-    </a>
-  </nav>
+  <a
+    routerLink="/tasks"
+    routerLinkActive="active">
+    <span>☷</span>
+    Tasks
+  </a>
+
+  <a
+    routerLink="/insights"
+    routerLinkActive="active">
+    <span>▥</span>
+    Insights
+  </a>
+
+  <a
+    routerLink="/profile"
+    routerLinkActive="active">
+    <span>♙</span>
+    Profile
+  </a>
+
+</nav>
 
 </div>
