@@ -1,0 +1,274 @@
+* {
+  box-sizing: border-box;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #F3F7FD;
+  padding: 25px 7%;
+  padding-bottom: 100px;
+  font-family: 'Inter', sans-serif;
+  color: #0B2A5B;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 45px;
+}
+
+.brand-logo {
+  width: 155px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1E6FE8;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.welcome-section {
+  margin-bottom: 28px;
+}
+
+.date {
+  color: #5B6B85;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.welcome-section h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.welcome-description {
+  color: #5B6B85;
+  font-size: 14px;
+}
+
+.progress-card {
+  background: #0B2A5B;
+  color: white;
+  padding: 27px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-info h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.progress-info p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #DCE8FA;
+  max-width: 420px;
+}
+
+.progress-percentage {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.progress-track {
+  height: 8px;
+  background: #526B91;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2B8CFF;
+  border-radius: 20px;
+}
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 35px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 13px;
+  border: 1px solid #E5ECF5;
+}
+
+.stat-card h2 {
+  font-size: 26px;
+  margin: 0 0 8px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.stat-card p {
+  color: #5B6B85;
+  font-size: 13px;
+  margin: 0;
+}
+
+.tasks-section {
+  margin-bottom: 30px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 19px;
+}
+
+.section-heading a {
+  color: #1E6FE8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.task-card {
+  background: #ffffff;
+  border: 1px solid #E5ECF5;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-details {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.task-dot {
+  width: 10px;
+  height: 10px;
+  background: #1E6FE8;
+  border-radius: 50%;
+}
+
+.task-details h3 {
+  font-size: 14px;
+  margin: 0 0 7px;
+}
+
+.task-details p {
+  font-size: 12px;
+  color: #5B6B85;
+  margin: 0;
+}
+
+.priority {
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.priority.high {
+  color: #D94848;
+  background: #FFF0F0;
+}
+
+.priority.medium {
+  color: #B7791F;
+  background: #FFF7E6;
+}
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #E5ECF5;
+  display: flex;
+  justify-content: space-around;
+  padding: 13px 10px;
+  z-index: 10;
+}
+
+.bottom-navigation a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: #5B6B85;
+  font-size: 12px;
+}
+
+.bottom-navigation a span {
+  font-size: 21px;
+}
+
+.bottom-navigation a.active {
+  color: #1E6FE8;
+  font-weight: 600;
+}
+
+@media (max-width: 650px) {
+  .dashboard-page {
+    padding: 20px 18px 90px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 32px;
+  }
+
+  .stats-section {
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px 10px;
+  }
+
+  .stat-card h2 {
+    font-size: 22px;
+  }
+
+  .progress-card {
+    padding: 20px;
+  }
+
+  .progress-info h2 {
+    font-size: 17px;
+  }
+
+  .progress-info p {
+    font-size: 12px;
+  }
+}

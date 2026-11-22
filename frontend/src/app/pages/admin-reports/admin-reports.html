@@ -1,0 +1,70 @@
+<div class="reports-page">
+
+  <header class="reports-header">
+    <img src="/taskflow-logo.png" alt="TaskFlow Logo" class="brand-logo">
+    <a routerLink="/admin-dashboard" class="back-button">← Admin Dashboard</a>
+  </header>
+
+  <section class="welcome-section">
+    <p>TaskFlow Administration</p>
+    <h1>Progress & Reports</h1>
+    <p>Monitor overall productivity and individual user progress.</p>
+  </section>
+
+  <section class="overall-card">
+    <div>
+      <h2>Overall Task Completion</h2>
+      <p>{{ completedTasks }} of {{ allTasks.length }} tasks completed</p>
+    </div>
+    <h1>{{ overallProgress }}%</h1>
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="overallProgress"></div>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <h2>{{ completedTasks }}</h2>
+      <p>Completed</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ inProgressTasks }}</h2>
+      <p>In Progress</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ pendingTasks }}</h2>
+      <p>Pending</p>
+    </div>
+  </section>
+
+  <section class="users-report">
+    <h2>User-wise Progress</h2>
+
+    <div class="user-report-card" *ngFor="let user of users">
+      <div class="user-heading">
+        <h3>{{ user.name }}</h3>
+        <strong>{{ getUserProgress(user) }}%</strong>
+      </div>
+
+      <div class="progress-track user-progress">
+        <div class="progress-fill"
+          [style.width.%]="getUserProgress(user)">
+        </div>
+      </div>
+
+      <div class="task-report" *ngFor="let task of user.tasks">
+        <span>{{ task.title }}</span>
+
+        <span class="status"
+          [class.completed]="task.status === 'Completed'"
+          [class.pending]="task.status === 'Pending'"
+          [class.in-progress]="task.status === 'In Progress'">
+          {{ task.status }}
+        </span>
+      </div>
+    </div>
+  </section>
+
+</div>

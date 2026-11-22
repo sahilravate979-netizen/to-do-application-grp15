@@ -1,0 +1,92 @@
+<div class="new-task-page">
+
+  <div class="page-header">
+    <button class="back-button" (click)="cancel()">←</button>
+    <h1>New Task</h1>
+  </div>
+
+  <div class="task-form-card">
+
+    <form (ngSubmit)="saveTask()">
+
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="task.title"
+          placeholder="Enter task title"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="task.description"
+          placeholder="Add task description"
+          rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Priority</label>
+
+        <div class="priority-options">
+          <label>
+            <input type="radio" name="priority"
+              value="Low" [(ngModel)]="task.priority">
+            Low
+          </label>
+
+          <label>
+            <input type="radio" name="priority"
+              value="Medium" [(ngModel)]="task.priority">
+            Medium
+          </label>
+
+          <label>
+            <input type="radio" name="priority"
+              value="High" [(ngModel)]="task.priority">
+            High
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dueDate">Due date</label>
+        <input
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          [(ngModel)]="task.dueDate">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select
+          id="category"
+          name="category"
+          [(ngModel)]="task.category">
+
+          <option value="Work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="Study">Study</option>
+
+        </select>
+      </div>
+
+      <div class="form-buttons">
+        <button type="button" class="cancel-button"
+          (click)="cancel()">Cancel</button>
+
+        <button type="submit" class="save-button">
+          Save Task
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

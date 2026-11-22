@@ -1,0 +1,52 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="logo">
+      <img src="/taskflow-logo.png" alt="TaskFlow Logo">
+    </div>
+
+    <div class="welcome">
+      <h1>Admin Login</h1>
+      <p>Welcome back! Log in to manage TaskFlow.</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+        <label for="email">Admin Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Enter admin email"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Enter password"
+          required>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+
+      <button type="submit" class="login-button">
+        Log in as Admin
+      </button>
+
+      <p class="signup-text">
+        Are you a user?
+        <a routerLink="/user-login">User Login</a>
+      </p>
+
+    </form>
+  </div>
+</div>

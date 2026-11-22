@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   TaskFlow &ndash; Clickable Prototype
+  </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+    margin: 0;
+}
+
+.s {
+    width: 390px;
+    height: 844px;
+    box-sizing: border-box;
+    background: #F3F7FD;
+    font-family: Inter,sans-serif;
+    color: #0B2A5B;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.p {
+    padding: 60px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+}
+
+h1 {
+    margin: 0;
+    font-family: Montserrat,sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -.3px;
+}
+
+.m {
+    color: #5B6B85;
+    font-size: 13px;
+}
+
+.in {
+    height: 52px;
+    border: 1.5px solid #DCE6F5;
+    border-radius: 14px;
+    padding: 0 16px;
+    font: inherit;
+    font-size: 15px;
+    color: #0B2A5B;
+    background: #fff;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.lb {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.bt {
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: #1E6FE8;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    box-shadow: 0 8px 18px rgba(30,111,232,.28);
+}
+
+.bo {
+    height: 52px;
+    border: 1.5px solid #DCE6F5;
+    border-radius: 14px;
+    background: #fff;
+    color: #0B2A5B;
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    width: 100%;
+}
+
+.c {
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(11,42,91,.06);
+}
+
+.ck {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #9FB3D1;
+    border-radius: 50%;
+    flex: none;
+    box-sizing: border-box;
+}
+
+.dn {
+    background: #1E6FE8;
+    border-color: #1E6FE8;
+}
+
+.t {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.pl {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 99px;
+}
+
+.hi {
+    background: #FDE8E8;
+    color: #9B1C1C;
+}
+
+.md {
+    background: #FFF1D6;
+    color: #8A5300;
+}
+
+.lo {
+    background: #E1F5EA;
+    color: #17663A;
+}
+
+.ch {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 99px;
+    border: 1.5px solid #DCE6F5;
+    background: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3E5072;
+}
+
+.on {
+    background: #0B2A5B;
+    border-color: #0B2A5B;
+    color: #fff;
+}
+
+.nv {
+    height: 84px;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -4px 18px rgba(11,42,91,.08);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.nv a {
+    font-size: 11px;
+    font-weight: 600;
+    color: #5B6B85;
+    text-decoration: none;
+    min-width: 56px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.nv a.a {
+    color: #1E6FE8;
+}
+
+.nv .f {
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    background: #1E6FE8;
+    color: #fff;
+    margin-top: -22px;
+    box-shadow: 0 8px 18px rgba(30,111,232,.35);
+    min-width: 52px;
+}
+
+.i {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.st {
+    flex: 1;
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(11,42,91,.06);
+}
+
+.st b {
+    font-family: Montserrat,sans-serif;
+    font-size: 22px;
+    display: block;
+}
+
+.sr {
+    position: relative;
+}
+
+.sr .i {
+    position: absolute;
+    left: 16px;
+    top: 15px;
+    color: #5B6B85;
+    width: 20px;
+    height: 20px;
+}
+
+.sr .in {
+    padding-left: 44px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg,#DCE9FF,#F3F7FD);
+    font-family: Inter,sans-serif;
+}
+
+#stage {
+    transform-origin: center;
+    border-radius: 40px;
+    box-shadow: 0 30px 80px rgba(11,42,91,.25);
+    overflow: hidden;
+    width: 390px;
+    height: 844px;
+    background: #F3F7FD;
+}
+
+
+.scr {
+    display: none;
+    animation: in .25s ease;
+}
+
+.scr.on {
+    display: block;
+}
+
+/* Screen transition animation */
+@keyframes in {
+    from {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Interactive elements */
+a,
+button,
+.ck {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Completed task checkbox */
+.ck.dn::after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 11px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: translate(6px, 1px) rotate(45deg);
+}
+
+/* Selected button */
+.sel {
+    outline: 2.5px solid #1E6FE8;
+    outline-offset: 2px;
+}
+
+/* Responsive layout */
+@media (max-width: 430px) {
+    body {
+        background: #F3F7FD;
+    }
+
+    #stage {
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+  </style>
+ </head>
+ <body>
+  <main id="stage">
+   <section aria-label="login screen" class="scr" data-screen="login">
+    <div class="s">
+     <div style="height:330px;background:linear-gradient(160deg,#EAF2FF,#F3F7FD);display:flex;align-items:center;justify-content:center;padding-top:20px">
+      <img alt="TaskFlow &ndash; smart to-do and productivity" src="../Logo/taskflow-logo.png" style="height:190px"/>
+     </div>
+     <div class="p" style="padding-top:0;gap:14px;margin-top:-10px">
+      <div>
+       <h1>
+        Welcome back
+       </h1>
+       <div class="m" style="margin-top:4px;font-size:14px">
+        Log in to pick up where you left off.
+       </div>
+      </div>
+      <label class="lb">
+       Email
+       <input class="in" placeholder="you@example.com" type="email"/>
+      </label>
+      <label class="lb">
+       Password
+       <input class="in" placeholder="Enter your password" type="password"/>
+      </label>
+      <div style="text-align:right;margin-top:-4px">
+       <a href="#" style="color:#1E6FE8;font-size:13px;font-weight:600">
+        Forgot password?
+       </a>
+      </div>
+      <button class="bt" data-go="dash">
+       Log in
+      </button>
+      <button class="bo">
+       Continue with Google
+      </button>
+      <div class="m" style="text-align:center;font-size:14px">
+       New to TaskFlow?
+       <a href="#" style="color:#1E6FE8;font-weight:600">
+        Create account
+       </a>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-label="dash screen" class="scr" data-screen="dash">
+    <div class="s">
+     <div class="p" style="gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+       <img alt="TaskFlow" src="../Logo/taskflow-icon.png" style="height:40px"/>
+       <div style="flex:1">
+        <div class="m">
+         Wednesday, 18 November
+        </div>
+        <div class="t" style="font-size:18px">
+         Good morning
+        </div>
+       </div>
+       <div style="width:40px;height:40px;border-radius:50%;background:#0B2A5B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px">
+        TF
+       </div>
+      </div>
+      <div style="border-radius:22px;background:linear-gradient(135deg,#0B2A5B,#1E6FE8);color:#fff;padding:20px;display:flex;align-items:center;gap:18px">
+       <svg aria-label="66 percent complete" height="88" role="img" viewbox="0 0 88 88" width="88">
+        <circle cx="44" cy="44" fill="none" r="36" stroke="rgba(255,255,255,.25)" stroke-width="9">
+        </circle>
+        <circle cx="44" cy="44" fill="none" r="36" stroke="#fff" stroke-dasharray="149 226" stroke-linecap="round" stroke-width="9" transform="rotate(-90 44 44)">
+        </circle>
+        <text fill="#fff" font-family="Montserrat" font-size="20" font-weight="700" text-anchor="middle" x="44" y="50">
+         66%
+        </text>
+       </svg>
+       <div>
+        <div class="t" style="font-size:18px">
+         Great progress!
+        </div>
+        <div style="font-size:13px;opacity:.9;margin-top:4px;line-height:1.4">
+         2 of 3 tasks due today are almost done. Keep the flow going.
+        </div>
+       </div>
+      </div>
+      <div style="display:flex;gap:10px">
+       <div class="st">
+        <b>
+         8
+        </b>
+        <span class="m">
+         Pending
+        </span>
+       </div>
+       <div class="st">
+        <b>
+         3
+        </b>
+        <span class="m">
+         In progress
+        </span>
+       </div>
+       <div class="st">
+        <b>
+         21
+        </b>
+        <span class="m">
+         Completed
+        </span>
+       </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+       <span class="t" style="font-size:17px">
+        Due today
+       </span>
+       <a data-go="tasks" href="#" style="color:#1E6FE8;font-size:13px;font-weight:600">
+        See all
+       </a>
+      </div>
+      <div class="c">
+       <span class="ck">
+       </span>
+       <div style="flex:1">
+        <div class="t">
+         Send project update
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         5:00 PM
+        </div>
+       </div>
+       <span class="pl hi">
+        High
+       </span>
+      </div>
+      <div class="c">
+       <span class="ck">
+       </span>
+       <div style="flex:1">
+        <div class="t">
+         Review pull request
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         6:30 PM
+        </div>
+       </div>
+       <span class="pl md">
+        Medium
+       </span>
+      </div>
+     </div>
+     <nav class="nv">
+      <a aria-current="page" class="a" data-go="dash" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z">
+        </path>
+       </svg>
+       Home
+      </a>
+      <a data-go="tasks" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2">
+        </path>
+       </svg>
+       Tasks
+      </a>
+      <a aria-label="Add task" class="f" data-go="add" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M12 5v14M5 12h14">
+        </path>
+       </svg>
+      </a>
+      <a href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M4 20V10M10 20V4M16 20v-8M22 20H2">
+        </path>
+       </svg>
+       Insights
+      </a>
+      <a data-go="login" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <circle cx="12" cy="8" r="4">
+        </circle>
+        <path d="M4 21a8 8 0 0 1 16 0">
+        </path>
+       </svg>
+       Profile
+      </a>
+     </nav>
+    </div>
+   </section>
+   <section aria-label="tasks screen" class="scr" data-screen="tasks">
+    <div class="s">
+     <div class="p" style="gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+       <h1>
+        My tasks
+       </h1>
+       <button aria-label="Sort and filter" class="ch" style="width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center">
+        <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+         <path d="M4 6h16M7 12h10M10 18h4">
+         </path>
+        </svg>
+       </button>
+      </div>
+      <div class="sr">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <circle cx="11" cy="11" r="7">
+        </circle>
+        <path d="M21 21l-4.3-4.3">
+        </path>
+       </svg>
+       <input aria-label="Search tasks" class="in" placeholder="Search tasks" type="search"/>
+      </div>
+      <div style="display:flex;gap:8px">
+       <button class="ch on">
+        All
+       </button>
+       <button class="ch">
+        Pending
+       </button>
+       <button class="ch">
+        In progress
+       </button>
+       <button class="ch">
+        Done
+       </button>
+      </div>
+      <div class="m" style="font-weight:600;letter-spacing:.5px;margin-top:4px">
+       TODAY
+      </div>
+      <div class="c">
+       <span class="ck">
+       </span>
+       <div style="flex:1">
+        <div class="t">
+         Send project update
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         5:00 PM
+        </div>
+       </div>
+       <span class="pl hi">
+        High
+       </span>
+      </div>
+      <div class="c">
+       <span class="ck">
+       </span>
+       <div style="flex:1">
+        <div class="t">
+         Write API documentation
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         6:30 PM
+        </div>
+       </div>
+       <span class="pl md">
+        Medium
+       </span>
+      </div>
+      <div class="m" style="font-weight:600;letter-spacing:.5px;margin-top:4px">
+       UPCOMING
+      </div>
+      <div class="c">
+       <span class="ck">
+       </span>
+       <div style="flex:1">
+        <div class="t">
+         Plan weekly groceries
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         Fri, 20 Nov
+        </div>
+       </div>
+       <span class="pl lo">
+        Low
+       </span>
+      </div>
+      <div class="c">
+       <span class="ck dn">
+       </span>
+       <div style="flex:1">
+        <div class="t" style="text-decoration:line-through;color:#5B6B85">
+         Book dentist
+        </div>
+        <div class="m" style="display:flex;gap:5px;align-items:center">
+         <svg aria-hidden="true" class="i" style="width:14px;height:14px" viewbox="0 0 24 24">
+          <rect height="16" rx="3" width="18" x="3" y="5">
+          </rect>
+          <path d="M3 10h18M8 3v4M16 3v4">
+          </path>
+         </svg>
+         Completed
+        </div>
+       </div>
+       <span class="pl lo">
+        Low
+       </span>
+      </div>
+     </div>
+     <nav class="nv">
+      <a data-go="dash" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z">
+        </path>
+       </svg>
+       Home
+      </a>
+      <a aria-current="page" class="a" data-go="tasks" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2">
+        </path>
+       </svg>
+       Tasks
+      </a>
+      <a aria-label="Add task" class="f" data-go="add" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M12 5v14M5 12h14">
+        </path>
+       </svg>
+      </a>
+      <a href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <path d="M4 20V10M10 20V4M16 20v-8M22 20H2">
+        </path>
+       </svg>
+       Insights
+      </a>
+      <a data-go="login" href="#">
+       <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+        <circle cx="12" cy="8" r="4">
+        </circle>
+        <path d="M4 21a8 8 0 0 1 16 0">
+        </path>
+       </svg>
+       Profile
+      </a>
+     </nav>
+    </div>
+   </section>
+   <section aria-label="add screen" class="scr" data-screen="add">
+    <div class="s">
+     <div class="p" style="gap:14px">
+      <div style="display:flex;align-items:center;gap:12px">
+       <button aria-label="Back" class="ch" data-go="tasks" style="width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center">
+        <svg aria-hidden="true" class="i" viewbox="0 0 24 24">
+         <path d="M15 5l-7 7 7 7">
+         </path>
+        </svg>
+       </button>
+       <h1 style="font-size:22px">
+        New task
+       </h1>
+      </div>
+      <label class="lb">
+       Title
+       <input class="in" placeholder="What needs to be done?" type="text"/>
+      </label>
+      <label class="lb">
+       Description
+       <textarea class="in" placeholder="Add details (optional)" style="height:96px;padding:14px 16px;resize:none"></textarea>
+      </label>
+      <div class="lb">
+       Priority
+       <div style="display:flex;gap:8px">
+        <button class="ch lo" style="flex:1;height:44px">
+         Low
+        </button>
+        <button class="ch md" style="flex:1;height:44px;border-color:#8A5300">
+         Medium
+        </button>
+        <button class="ch hi" style="flex:1;height:44px">
+         High
+        </button>
+       </div>
+      </div>
+      <label class="lb">
+       Due date
+       <input class="in" type="date"/>
+      </label>
+      <div class="lb">
+       Category
+       <div style="display:flex;gap:8px">
+        <button class="ch on">
+         Work
+        </button>
+        <button class="ch">
+         Personal
+        </button>
+        <button class="ch">
+         Study
+        </button>
+       </div>
+      </div>
+      <div style="flex:1">
+      </div>
+     </div>
+     <div style="padding:14px 20px 28px;background:#fff;box-shadow:0 -4px 18px rgba(11,42,91,.08);display:flex;flex-direction:column;gap:10px">
+      <button class="bt" data-go="tasks">
+       Save task
+      </button>
+     </div>
+    </div>
+   </section>
+  </main>
+  <script>
+   const scr = [...document.querySelectorAll('.scr')];
+const st = document.getElementById('stage');
+
+function go(n) {
+    scr.forEach(s => s.classList.toggle('on', s.dataset.screen === n));
+    history.replaceState(null, '', '#' + n);
+}
+
+document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]');
+    if (g) {
+        e.preventDefault();
+        go(g.dataset.go);
+        return;
+    }
+
+    const k = e.target.closest('.ck');
+    if (k) {
+        k.classList.toggle('dn');
+        const t = k.parentElement.querySelector('.t');
+        t.style.textDecoration = k.classList.contains('dn') ? 'line-through' : '';
+        t.style.color = k.classList.contains('dn') ? '#5B6B85' : '';
+    }
+
+    const c = e.target.closest('.ch');
+    if (c && c.parentElement.children.length > 1) {
+        const grp = c.closest('.scr').dataset.screen;
+
+        if (
+            (grp === 'add' && c.classList.contains('hi')) ||
+            c.classList.contains('md') ||
+            c.classList.contains('lo')
+        ) {
+            [...c.parentElement.children].forEach(x => x.classList.remove('sel'));
+            c.classList.add('sel');
+        } else {
+            [...c.parentElement.children].forEach(x => x.classList.remove('on'));
+            c.classList.add('on');
+        }
+    }
+
+    if (e.target.closest('a[href="#"]')) {
+        e.preventDefault();
+    }
+});
+
+function fit() {
+    const s = Math.min(1, (innerHeight - 24) / 844, innerWidth / 390);
+    st.style.transform = 'scale(' + s + ')';
+}
+
+addEventListener('resize', fit);
+fit();
+go((location.hash || '#login').slice(1));
+  </script>
+ </body>
+</html>
