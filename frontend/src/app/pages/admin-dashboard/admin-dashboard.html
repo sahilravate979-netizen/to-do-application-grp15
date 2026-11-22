@@ -1,0 +1,113 @@
+<div class="dashboard-page">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <img src="/taskflow-logo.png" alt="TaskFlow Logo" class="brand-logo">
+
+    <div class="admin-profile">
+      <span>Admin</span>
+      <div class="profile-icon">A</div>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <p class="date">TaskFlow Administration</p>
+    <h1>Admin Dashboard!</h1>
+    <p class="welcome-description">
+      Monitor users, tasks and overall productivity.
+    </p>
+
+    <a routerLink="/admin-reports" class="reports-button">
+      View Progress & Reports →
+    </a>
+  </section>
+
+  <!-- Overall Progress -->
+  <section class="progress-card">
+    <div class="progress-info">
+      <div>
+        <h2>Overall Task Progress</h2>
+        <p>Track the completion progress of all users.</p>
+      </div>
+
+      <div class="progress-percentage">{{ progress }}%</div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </section>
+
+  <!-- Statistics -->
+  <section class="stats-section">
+
+    <div class="stat-card">
+      <h2>{{ totalUsers }}</h2>
+      <p>Registered Users</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ totalTasks }}</h2>
+      <p>Total Tasks</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ completedTasks }}</h2>
+      <p>Completed Tasks</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ inProgressTasks }}</h2>
+      <p>In Progress</p>
+    </div>
+
+    <div class="stat-card">
+      <h2>{{ pendingTasks }}</h2>
+      <p>Pending Tasks</p>
+    </div>
+
+  </section>
+
+  <!-- Users and Tasks -->
+  <section class="users-section">
+
+    <div class="section-heading">
+      <h2>Registered Users & Their Tasks</h2>
+      <span>{{ totalUsers }} Users</span>
+    </div>
+
+    <div class="user-card" *ngFor="let user of users">
+
+      <div class="user-info">
+        <div class="user-avatar">
+          {{ user.name.charAt(0) }}
+        </div>
+
+        <div>
+          <h3>{{ user.name }}</h3>
+          <p>{{ user.email }}</p>
+        </div>
+      </div>
+
+      <div class="user-tasks">
+        <h4>Tasks ({{ user.tasks.length }})</h4>
+
+        <div class="task-row" *ngFor="let task of user.tasks">
+          <span>{{ task.title }}</span>
+
+          <span class="status"
+            [class.completed]="task.status === 'Completed'"
+            [class.pending]="task.status === 'Pending'"
+            [class.in-progress]="task.status === 'In Progress'">
+            {{ task.status }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

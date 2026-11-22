@@ -1,0 +1,95 @@
+<div class="dashboard-page">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <img src="/taskflow-logo.png" alt="TaskFlow Logo" class="brand-logo">
+
+    <div class="profile-icon">S</div>
+  </header>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <p class="date">{{ date }}</p>
+    <h1>{{ greeting }}!</h1>
+    <p class="welcome-description">
+      Here's what's happening with your tasks today.
+    </p>
+  </section>
+
+  <!-- Progress Card -->
+  <section class="progress-card">
+    <div class="progress-info">
+      <div>
+        <h2>Great progress!</h2>
+        <p>2 of 3 tasks due today are almost done. Keep the flow going.</p>
+      </div>
+
+      <div class="progress-percentage">{{ progress }}%</div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </section>
+
+  <!-- Statistics -->
+  <section class="stats-section">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <h2>{{ stat.count }}</h2>
+      <p>{{ stat.title }}</p>
+    </div>
+  </section>
+
+  <!-- Due Today -->
+  <section class="tasks-section">
+
+    <div class="section-heading">
+      <h2>Due today</h2>
+      <a href="/tasks">See all</a>
+    </div>
+
+    <div class="task-card" *ngFor="let task of dueTasks">
+
+      <div class="task-details">
+        <span class="task-dot"></span>
+
+        <div>
+          <h3>{{ task.title }}</h3>
+          <p>{{ task.time }}</p>
+        </div>
+      </div>
+
+      <span class="priority"
+        [class.high]="task.priority === 'High'"
+        [class.medium]="task.priority === 'Medium'">
+        {{ task.priority }}
+      </span>
+
+    </div>
+
+  </section>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-navigation">
+    <a routerLink="/dashboard" class="active">
+      <span>⌂</span>
+      Home
+    </a>
+
+    <a routerLink="/tasks">
+      <span>☷</span>
+      Tasks
+    </a>
+
+    <a href="#">
+      <span>▥</span>
+      Insights
+    </a>
+
+    <a href="#">
+      <span>♙</span>
+      Profile
+    </a>
+  </nav>
+
+</div>
