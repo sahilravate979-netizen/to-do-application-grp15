@@ -1,53 +1,28 @@
+
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const db = require('./config/db');
 require('dotenv').config();
+
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Import Routes
-const authRoutes = require('./routes/authRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-
-// Authentication Routes
+// Authentication routes
 app.use('/api/auth', authRoutes);
 
-// Admin Routes
+// Admin routes
 app.use('/api/admin', adminRoutes);
 
-// Task CRUD Routes
-app.use('/api/tasks', taskRoutes);
-
-// Base Route
 app.get('/', (req, res) => {
-  res.send('To-Do Application Backend is running!');
+    res.send('To-Do Application Backend is running!');
 });
 
-async function ensureDefaultAdmin() {
-  try {
-    const hash = await bcrypt.hash('Admin@12345', 10);
-    await db.query(
-      `INSERT INTO users (name, email, password_hash, role)
-       VALUES (?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE role = 'Admin'`,
-      ['Admin', 'admin@example.com', hash, 'Admin']
-    );
-    console.log('Default admin verified (admin@example.com)');
-  } catch (err) {
-    console.error('Admin seed skipped:', err.message);
-  }
-}
-
-// Server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
-  await ensureDefaultAdmin();
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
