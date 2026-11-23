@@ -1,0 +1,62 @@
+
+<div class="insights-page">
+
+  <header class="page-header">
+    <a routerLink="/dashboard" class="back-button">←</a>
+    <div>
+      <h1>My Insights</h1>
+      <p>Your productivity overview</p>
+    </div>
+  </header>
+
+  <section class="welcome-card">
+    <h2>Track Your Productivity!</h2>
+    <p>See how you're progressing with your daily tasks.</p>
+  </section>
+
+  <section class="stats-grid">
+
+    <div class="stat-card total">
+      <h2>{{ totalTasks }}</h2>
+      <p>Total Tasks</p>
+    </div>
+
+    <div class="stat-card pending">
+      <h2>{{ pendingTasks }}</h2>
+      <p>Pending</p>
+    </div>
+
+    <div class="stat-card progress">
+      <h2>{{ inProgressTasks }}</h2>
+      <p>In Progress</p>
+    </div>
+
+    <div class="stat-card completed">
+      <h2>{{ completedTasks }}</h2>
+      <p>Completed</p>
+    </div>
+
+  </section>
+
+  <section class="completion-card">
+    <h2>Task Completion Rate</h2>
+
+    <div class="percentage">
+      {{ completionRate }}%
+    </div>
+
+    <div class="progress-track">
+      <div
+        class="progress-fill"
+        [style.width.%]="completionRate">
+      </div>
+    </div>
+
+    <p>{{ completedTasks }} out of {{ totalTasks }} tasks completed.</p>
+  </section>
+
+  <a routerLink="/tasks" class="view-tasks">
+    View My Tasks →
+  </a>
+
+</div>

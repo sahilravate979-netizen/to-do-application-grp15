@@ -1,9 +1,16 @@
+
 <div class="tasks-page">
 
   <!-- Header -->
   <header class="tasks-header">
-    <img src="/taskflow-logo.png" alt="TaskFlow Logo" class="brand-logo">
-    <button class="add-button" (click)="openAddForm()">+ Add Task</button>
+    <img
+      src="/taskflow-logo.png"
+      alt="TaskFlow Logo"
+      class="brand-logo">
+
+    <button class="add-button" (click)="openAddForm()">
+      + Add Task
+    </button>
   </header>
 
   <!-- Page Heading -->
@@ -15,72 +22,113 @@
   <!-- Search -->
   <div class="search-box">
     <span>⌕</span>
-    <input type="text" placeholder="Search tasks..." [(ngModel)]="searchText">
+
+    <input
+      type="text"
+      placeholder="Search tasks..."
+      [(ngModel)]="searchText">
   </div>
 
   <!-- Filters -->
   <div class="filter-tabs">
-    <button *ngFor="let filter of ['All', 'Pending', 'In progress', 'Done']" [class.active]="selectedFilter === filter"
+    <button
+      *ngFor="let filter of ['All', 'Pending', 'In progress', 'Done']"
+      [class.active]="selectedFilter === filter"
       (click)="selectFilter(filter)">
+
       {{ filter }}
+
     </button>
   </div>
 
   <!-- Today Tasks -->
   <section class="task-group">
+
     <h2>Today</h2>
 
     <div class="task-card" *ngFor="let task of todayTasks">
 
-      <button class="check-button" [class.checked]="task.status === 'Done' || task.status === 'Completed'"
+      <button
+        class="check-button"
+        [class.checked]="task.status === 'Done' || task.status === 'Completed'"
         (click)="toggleTask(task)">
+
         {{ (task.status === 'Done' || task.status === 'Completed') ? '✓' : '' }}
+
       </button>
 
       <div class="task-info">
-        <h3 [class.completed]="task.status === 'Done' || task.status === 'Completed'"></h3>
-        {{ task.title }}
+
+        <h3
+          [class.completed]="task.status === 'Done' || task.status === 'Completed'">
+          {{ task.title }}
+        </h3>
 
         <p>{{ task.time }}</p>
+
       </div>
 
-      <span class="priority" [ngClass]="task.priority.toLowerCase()">
-        {{ task.priority }}
+      <span
+        class="priority"
+        [ngClass]="(task.priority || 'Medium').toLowerCase()">
+
+        {{ task.priority || 'Medium' }}
+
       </span>
 
-      <button class="delete-button" (click)="deleteTask(task.id)">×</button>
+      <button
+        class="delete-button"
+        (click)="deleteTask(task.id)">
+        ×
+      </button>
 
     </div>
 
     <p class="empty-message" *ngIf="todayTasks.length === 0">
       No tasks for today.
     </p>
+
   </section>
 
   <!-- Upcoming Tasks -->
   <section class="task-group">
+
     <h2>Upcoming</h2>
 
     <div class="task-card" *ngFor="let task of upcomingTasks">
 
-      <button class="check-button" [class.checked]="task.status === 'Done' || task.status === 'Completed'"
+      <button
+        class="check-button"
+        [class.checked]="task.status === 'Done' || task.status === 'Completed'"
         (click)="toggleTask(task)">
+
         {{ (task.status === 'Done' || task.status === 'Completed') ? '✓' : '' }}
+
       </button>
 
       <div class="task-info">
-        <h3 [class.completed]="task.status === 'Done' || task.status === 'Completed'">
+
+        <h3
+          [class.completed]="task.status === 'Done' || task.status === 'Completed'">
           {{ task.title }}
         </h3>
+
         <p>{{ task.time }}</p>
+
       </div>
 
-      <span class="priority" [ngClass]="task.priority.toLowerCase()">
-        {{ task.priority }}
+      <span
+        class="priority"
+        [ngClass]="(task.priority || 'Medium').toLowerCase()">
+
+        {{ task.priority || 'Medium' }}
+
       </span>
 
-      <button class="delete-button" (click)="deleteTask(task.id)">
-        x
+      <button
+        class="delete-button"
+        (click)="deleteTask(task.id)">
+        ×
       </button>
 
     </div>
@@ -88,74 +136,138 @@
     <p class="empty-message" *ngIf="upcomingTasks.length === 0">
       No upcoming tasks.
     </p>
+
   </section>
 
   <!-- Add Task Form -->
   <div class="modal-overlay" *ngIf="showAddForm">
+
     <div class="add-task-modal">
 
       <div class="modal-heading">
         <h2>New task</h2>
-        <button type="button" (click)="closeAddForm()">×</button>
+
+        <button
+          type="button"
+          (click)="closeAddForm()">
+          ×
+        </button>
       </div>
 
       <form (ngSubmit)="addTask()">
 
+        <!-- Title -->
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" [(ngModel)]="newTask.title" placeholder="Enter task title" required>
 
+        <input
+          id="title"
+          name="title"
+          type="text"
+          [(ngModel)]="newTask.title"
+          placeholder="Enter task title"
+          required>
+
+        <!-- Description -->
         <label for="description">Description</label>
-        <textarea id="description" name="description" [(ngModel)]="newTask.description"
+
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="newTask.description"
           placeholder="Add task description">
         </textarea>
 
+        <!-- Priority -->
         <label>Priority</label>
+
         <div class="choice-buttons">
-          <button type="button" *ngFor="let p of ['Low', 'Medium', 'High']" [class.selected]="newTask.priority === p"
+
+          <button
+            type="button"
+            *ngFor="let p of ['Low', 'Medium', 'High']"
+            [class.selected]="newTask.priority === p"
             (click)="newTask.priority = p">
+
             {{ p }}
+
           </button>
+
         </div>
 
+        <!-- Due Date -->
         <label for="dueDate">Due date</label>
-        <input id="dueDate" name="dueDate" type="date" [(ngModel)]="newTask.dueDate">
 
+        <input
+          id="dueDate"
+          name="dueDate"
+          type="date"
+          [(ngModel)]="newTask.dueDate">
+
+        <!-- Category -->
         <label for="category">Category</label>
-        <select id="category" name="category" [(ngModel)]="newTask.category">
+
+        <select
+          id="category"
+          name="category"
+          [(ngModel)]="newTask.category">
+
           <option value="Work">Work</option>
           <option value="Personal">Personal</option>
           <option value="Study">Study</option>
+
         </select>
 
+        <!-- Save Button -->
         <button type="submit" class="save-button">
           Save task
         </button>
 
       </form>
+
     </div>
+
   </div>
 
   <!-- Bottom Navigation -->
   <nav class="bottom-navigation">
-    <a routerLink="/dashboard">
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+
       <span>⌂</span>
       Home
+
     </a>
 
-    <a routerLink="/tasks" class="active">
+    <a
+      routerLink="/tasks"
+      routerLinkActive="active">
+
       <span>☷</span>
       Tasks
+
     </a>
 
-    <a href="#">
+    <a
+      routerLink="/insights"
+      routerLinkActive="active">
+
       <span>▥</span>
       Insights
+
     </a>
 
-    <a href="#">
+    <a
+      routerLink="/profile"
+      routerLinkActive="active">
+
       <span>♙</span>
       Profile
+
     </a>
+
   </nav>
 
 </div>

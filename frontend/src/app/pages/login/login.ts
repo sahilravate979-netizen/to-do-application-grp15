@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,13 +13,19 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.css'
 })
 export class Login {
+
   email = '';
   password = '';
   errorMessage = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
-  login() {
+  // USER LOGIN
+  login(): void {
+
     this.errorMessage = '';
 
     if (!this.email.trim() || !this.password.trim()) {
@@ -26,48 +33,105 @@ export class Login {
       return;
     }
 
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {
-        localStorage.setItem('taskflow_user', this.email);
+    const credentials = {
+      email: this.email.trim(),
+      password: this.password
+    };
+
+    this.authService.login(credentials).subscribe({
+
+      next: (res: any) => {
+
+        // Save the user's email
+        localStorage.setItem('taskflow_user', credentials.email);
+
+        // Extract user details from common API response structures
+        const user =
+          res?.user ||
+          res?.data?.user ||
+          res?.data ||
+          null;
+
+        // Save user details if the backend returns them
+        if (user) {
+          localStorage.setItem(
+            'taskflow_user_details',
+            JSON.stringify(user)
+          );
+        }
+
+        // Navigate to dashboard
         this.router.navigate(['/dashboard']);
       },
+
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Invalid email or password.';
+
+        console.error('Login failed:', err);
+
+        this.errorMessage =
+          err.error?.message || 'Invalid email or password.';
       }
+
     });
   }
 
-  forgotPassword(event: Event) {
+  // FORGOT PASSWORD
+  forgotPassword(event: Event): void {
+
     event.preventDefault();
+
     this.errorMessage = 'Password recovery will be available soon.';
   }
 
-  googleLogin() {
+  // GOOGLE LOGIN
+  googleLogin(): void {
+
     this.errorMessage = 'Google login will be connected later.';
   }
 
-  createAccount(event: Event) {
+  // CREATE ACCOUNT / REGISTER
+  createAccount(event: Event): void {
+
     event.preventDefault();
+
     this.errorMessage = '';
 
     if (!this.email.trim() || !this.password.trim()) {
-      this.errorMessage = 'Enter your email and password above, then click Create account.';
+
+      this.errorMessage =
+        'Enter your email and password above, then click Create account.';
+
       return;
     }
 
-    const derivedName = this.email.split('@')[0].replace(/[^a-zA-Z]/g, '') || 'User';
+    const derivedName =
+      this.email
+        .trim()
+        .split('@')[0]
+        .replace(/[^a-zA-Z ]/g, '') || 'User';
 
-    this.authService.register({
+    const userData = {
       name: derivedName,
       email: this.email.trim(),
       password: this.password
-    }).subscribe({
+    };
+
+    this.authService.register(userData).subscribe({
+
       next: () => {
+
+        // Registration successful; log in with the new account
         this.login();
       },
+
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Registration failed.';
+
+        console.error('Registration failed:', err);
+
+        this.errorMessage =
+          err.error?.message || 'Registration failed.';
       }
+
     });
   }
 }
