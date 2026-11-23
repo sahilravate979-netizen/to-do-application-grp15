@@ -1,21 +1,36 @@
 
 const db = require('../config/db');
 
-// Helper: Format database task for frontend
-const formatTask = (task) => ({
-    id: String(task.task_id),
-    title: task.title,
-    description: task.description || '',
-    status: task.status || 'Pending',
-    priority: task.priority || 'Medium',
-    dueDate: task.deadline
-        ? new Date(task.deadline).toISOString().slice(0, 10)
-        : null,
-    createdAt: task.created_at
-});
+// Format database task for frontend
+const formatTask = (task) => {
+    let dueDate = null;
+
+    if (task.deadline) {
+        const date = new Date(task.deadline);
+
+        if (!Number.isNaN(date.getTime())) {
+            dueDate = date.toISOString().slice(0, 10);
+        }
+    }
+
+    return {
+        id: String(task.task_id),
+        task_id: task.task_id,
+        user_id: task.user_id,
+        title: task.title,
+        description: task.description || '',
+        status: task.status || 'Pending',
+        priority: task.priority || 'Medium',
+        dueDate,
+        deadline: dueDate,
+        createdAt: task.created_at
+    };
+};
 
 // 1. CREATE TASK
 const createTask = async (req, res) => {
+    console.log('CREATE TASK: Request received');
+
     try {
         const {
             title,
@@ -25,14 +40,10 @@ const createTask = async (req, res) => {
             dueDate
         } = req.body;
 
-        if (!title || !title.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: 'Task title is required'
-            });
-        }
+        const userId = req.user?.id;
 
-        const userId = req.user.id;
+        console.log('CREATE TASK: User ID:', userId);
+        console.log('CREATE TASK: Title:', title);
 
         if (!userId) {
             return res.status(401).json({
@@ -41,9 +52,30 @@ const createTask = async (req, res) => {
             });
         }
 
-        const deadline = dueDate
-            ? `${dueDate.slice(0, 10)} 00:00:00`
-            : null;
+        if (!title || typeof title !== 'string' || !title.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Task title is required'
+            });
+        }
+
+        // Convert date into MySQL DATETIME format
+        let deadline = null;
+
+        if (dueDate) {
+            const datePart = String(dueDate).slice(0, 10);
+
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid due date format'
+                });
+            }
+
+            deadline = `${datePart} 00:00:00`;
+        }
+
+        console.log('CREATE TASK: Inserting into MySQL...');
 
         const [result] = await db.execute(
             `INSERT INTO tasks
@@ -59,10 +91,22 @@ const createTask = async (req, res) => {
             ]
         );
 
+        console.log(
+            'CREATE TASK: Insert successful. ID:',
+            result.insertId
+        );
+
         const [rows] = await db.execute(
-            'SELECT * FROM tasks WHERE task_id = ? AND user_id = ?',
+            `SELECT * FROM tasks
+             WHERE task_id = ? AND user_id = ?`,
             [result.insertId, userId]
         );
+
+        if (rows.length === 0) {
+            throw new Error('Created task could not be retrieved');
+        }
+
+        console.log('CREATE TASK: Completed successfully');
 
         return res.status(201).json({
             success: true,
@@ -71,22 +115,35 @@ const createTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Create task error:', error);
+        console.error('CREATE TASK ERROR:', error);
 
         return res.status(500).json({
             success: false,
-            message: 'Could not create task'
+            message: 'Could not create task',
+            error: process.env.NODE_ENV === 'development'
+                ? error.message
+                : undefined
         });
     }
 };
 
+
 // 2. GET ALL TASKS
 const getTasks = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: 'User authentication required'
+            });
+        }
 
         const [rows] = await db.execute(
-            'SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC',
+            `SELECT * FROM tasks
+             WHERE user_id = ?
+             ORDER BY created_at DESC`,
             [userId]
         );
 
@@ -97,7 +154,7 @@ const getTasks = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get tasks error:', error);
+        console.error('GET TASKS ERROR:', error);
 
         return res.status(500).json({
             success: false,
@@ -106,14 +163,16 @@ const getTasks = async (req, res) => {
     }
 };
 
+
 // 3. GET SINGLE TASK
 const getTask = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const taskId = req.params.id;
 
         const [rows] = await db.execute(
-            'SELECT * FROM tasks WHERE task_id = ? AND user_id = ?',
+            `SELECT * FROM tasks
+             WHERE task_id = ? AND user_id = ?`,
             [taskId, userId]
         );
 
@@ -130,7 +189,7 @@ const getTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get single task error:', error);
+        console.error('GET SINGLE TASK ERROR:', error);
 
         return res.status(500).json({
             success: false,
@@ -139,10 +198,11 @@ const getTask = async (req, res) => {
     }
 };
 
+
 // 4. UPDATE TASK
 const updateTask = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const taskId = req.params.id;
 
         const allowedFields = {
@@ -158,27 +218,37 @@ const updateTask = async (req, res) => {
 
         for (const [field, column] of Object.entries(allowedFields)) {
             if (req.body[field] !== undefined) {
-                updates.push(`${column} = ?`);
-
                 let value = req.body[field];
 
-                if (field === 'dueDate') {
-                    value = value
-                        ? `${value.slice(0, 10)} 00:00:00`
-                        : null;
-                }
-
                 if (field === 'title') {
-                    value = value.trim();
-
-                    if (!value) {
+                    if (typeof value !== 'string' || !value.trim()) {
                         return res.status(400).json({
                             success: false,
                             message: 'Task title cannot be empty'
                         });
                     }
+
+                    value = value.trim();
                 }
 
+                if (field === 'dueDate') {
+                    if (value) {
+                        const datePart = String(value).slice(0, 10);
+
+                        if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
+                            return res.status(400).json({
+                                success: false,
+                                message: 'Invalid due date format'
+                            });
+                        }
+
+                        value = `${datePart} 00:00:00`;
+                    } else {
+                        value = null;
+                    }
+                }
+
+                updates.push(`${column} = ?`);
                 values.push(value);
             }
         }
@@ -193,14 +263,16 @@ const updateTask = async (req, res) => {
         values.push(taskId, userId);
 
         const [result] = await db.execute(
-            `UPDATE tasks SET ${updates.join(', ')}
+            `UPDATE tasks
+             SET ${updates.join(', ')}
              WHERE task_id = ? AND user_id = ?`,
             values
         );
 
         if (result.affectedRows === 0) {
             const [existing] = await db.execute(
-                'SELECT task_id FROM tasks WHERE task_id = ? AND user_id = ?',
+                `SELECT task_id FROM tasks
+                 WHERE task_id = ? AND user_id = ?`,
                 [taskId, userId]
             );
 
@@ -213,7 +285,8 @@ const updateTask = async (req, res) => {
         }
 
         const [rows] = await db.execute(
-            'SELECT * FROM tasks WHERE task_id = ? AND user_id = ?',
+            `SELECT * FROM tasks
+             WHERE task_id = ? AND user_id = ?`,
             [taskId, userId]
         );
 
@@ -224,7 +297,7 @@ const updateTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Update task error:', error);
+        console.error('UPDATE TASK ERROR:', error);
 
         return res.status(500).json({
             success: false,
@@ -233,14 +306,16 @@ const updateTask = async (req, res) => {
     }
 };
 
+
 // 5. DELETE TASK
 const deleteTask = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const taskId = req.params.id;
 
         const [result] = await db.execute(
-            'DELETE FROM tasks WHERE task_id = ? AND user_id = ?',
+            `DELETE FROM tasks
+             WHERE task_id = ? AND user_id = ?`,
             [taskId, userId]
         );
 
@@ -257,7 +332,7 @@ const deleteTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Delete task error:', error);
+        console.error('DELETE TASK ERROR:', error);
 
         return res.status(500).json({
             success: false,
@@ -265,6 +340,7 @@ const deleteTask = async (req, res) => {
         });
     }
 };
+
 
 module.exports = {
     createTask,
