@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 
 // Task routes
 app.use('/api/tasks', taskRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Backend home route
 app.get('/', (req, res) => {
