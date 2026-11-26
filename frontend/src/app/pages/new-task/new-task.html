@@ -1,3 +1,4 @@
+
 <div class="new-task-page">
 
   <div class="page-header">
@@ -5,7 +6,47 @@
     <h1>New Task</h1>
   </div>
 
+  <!-- AI TASK CREATOR -->
+  <div class="task-form-card ai-task-card">
+
+    <div class="ai-heading">
+      <h2>✨ Create Task with AI</h2>
+      <p>Describe your task naturally and let Gemini AI organize it for you.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="aiInput">Describe your task</label>
+
+      <textarea
+        id="aiInput"
+        name="aiInput"
+        [(ngModel)]="aiInput"
+        placeholder="Example: Complete my Java assignment by Friday with high priority."
+        rows="3"
+        maxlength="1000">
+      </textarea>
+    </div>
+
+    <button
+      type="button"
+      class="save-button ai-generate-button"
+      (click)="generateTaskWithAI()"
+      [disabled]="isGeneratingAI">
+
+      {{ isGeneratingAI ? 'Generating with AI...' : '✨ Generate Task with AI' }}
+
+    </button>
+
+    <p class="ai-success" *ngIf="aiGenerated">
+      ✓ AI task generated! Review and edit the details below.
+    </p>
+
+  </div>
+
+  <!-- EXISTING TASK FORM -->
   <div class="task-form-card">
+
+    <h2>Task Details</h2>
 
     <form (ngSubmit)="saveTask()">
 
@@ -89,4 +130,5 @@
     </form>
 
   </div>
+
 </div>
